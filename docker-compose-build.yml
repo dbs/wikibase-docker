@@ -11,9 +11,9 @@ version: '3'
 
 services:
   wikibase:
-    image: wikibase/wikibase:1.30-bundle
+    image: wikibase/wikibase:1.31-bundle
     build:
-      context: ./wikibase/1.30/bundle
+      context: ./wikibase/1.31/bundle
       dockerfile: Dockerfile
     links:
       - mysql
@@ -68,10 +68,10 @@ services:
       - WIKIBASE_HOST=wikibase.svc
       - WDQS_HOST=wdqs-proxy.svc
   wdqs:
-    image: wikibase/wdqs:0.3.0
+    image: wikibase/wdqs:0.3.1
     restart: always
     build:
-      context: ./wdqs/0.3.0
+      context: ./wdqs/0.3.1
       dockerfile: Dockerfile
     volumes:
       - query-service-data:/wdqs/data
@@ -102,9 +102,9 @@ services:
         aliases:
          - wdqs-proxy.svc
   wdqs-updater:
-    image: wikibase/wdqs:0.3.0
+    image: wikibase/wdqs:0.3.1
     build:
-      context: ./wdqs/0.3.0
+      context: ./wdqs/0.3.1
       dockerfile: Dockerfile
     command: /runUpdate.sh
     depends_on:
