@@ -1,17 +1,13 @@
 FROM ubuntu:xenial as fetcher
 
 RUN apt-get update && \
-    apt-get install --yes --no-install-recommends unzip=6.*
+    apt-get install --yes --no-install-recommends unzip=6.* git ca-certificates
 
-ADD https://github.com/wikimedia/mediawiki-extensions-Wikibase/archive/REL1_31.zip .
-
-# Creates /mediawiki-extensions-Wikibase-REL1_31
-RUN unzip REL1_31.zip && rm ./*.zip
-
+RUN git clone https://github.com/wikimedia/mediawiki-extensions-Wikibase.git && cd mediawiki-extensions-Wikibase && git checkout origin/REL1_31 && git submodule update --init
 
 FROM composer as composer
 
-COPY --from=fetcher /mediawiki-extensions-Wikibase-REL1_31 /Wikibase
+COPY --from=fetcher /mediawiki-extensions-Wikibase /Wikibase
 
 WORKDIR /Wikibase
 RUN composer install --no-dev
