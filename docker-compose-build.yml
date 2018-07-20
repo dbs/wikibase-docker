@@ -16,20 +16,20 @@ services:
       context: ./wikibase/1.31/bundle
       dockerfile: Dockerfile
     links:
-      - mysql
+      - mariadb
     ports:
      - "8181:80"
     volumes:
       - mediawiki-images-data:/var/www/html/images
     depends_on:
-    - mysql
+    - mariadb
     - elasticsearch
     networks:
       default:
         aliases:
          - wikibase.svc
     environment:
-      - DB_SERVER=mysql.svc:3306
+      - DB_SERVER=mariadb.svc:3306
       - DB_USER=wikiuser
       - DB_PASS=sqlpass
       - DB_NAME=my_wiki
@@ -38,10 +38,10 @@ services:
       - MW_WG_SECRET_KEY=secretkey
       - MW_ELASTIC_HOST=elasticsearch.svc
       - MW_ELASTIC_PORT=9200
-  mysql:
+  mariadb:
     image: mariadb:latest
     volumes:
-      - mediawiki-mysql-data:/var/lib/mysql
+      - mediawiki-mariadb-data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: 'my_wiki'
       MYSQL_USER: 'wikiuser'
@@ -50,7 +50,7 @@ services:
     networks:
       default:
         aliases:
-         - mysql.svc
+         - mariadb.svc
   wdqs-frontend:
     image: wikibase/wdqs-frontend:latest
     build:
@@ -151,6 +151,6 @@ services:
       - "WB_ITEM_PREFIX=Item:"
 
 volumes:
-  mediawiki-mysql-data:
+  mediawiki-mariadb-data:
   mediawiki-images-data:
   query-service-data:
