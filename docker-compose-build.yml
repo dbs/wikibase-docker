@@ -102,9 +102,9 @@ services:
         aliases:
          - wdqs-proxy.svc
   wdqs-updater:
-    image: wikibase/wdqs:0.3.0
+    image: wikibase/wdqs:0.3.1
     build:
-      context: ./wdqs/0.3.0
+      context: ./wdqs/0.3.1
       dockerfile: Dockerfile
     command: /runUpdate.sh
     depends_on:
